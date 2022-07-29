@@ -41,7 +41,7 @@ const LanguageSelect = ({ location, appCtx, updateContext }) => {
   switch (lang) {
     case "es":
       if (currentLanguage === "es") return;
-      navigate(`/es/${getPathWithoutLanguage()}`);
+      navigate(`/es${getPathWithoutLanguage()}`);
     default:
       if (currentLanguage === "en") return;
       navigate(getPathWithoutLanguage());
