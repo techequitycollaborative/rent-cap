@@ -47,6 +47,7 @@ const emptyRentRange2 = {
 
 const baseCpi2020 = 0.01;
 const baseCpi2021 = 0.04;
+const baseCpi2022 = 0.077;
 
 const areaToCpi2020 = {
   Rest_Of_California: baseCpi2020,
@@ -64,6 +65,14 @@ const areaToCpi2021 = {
   'Riverside-San_Bernardino-Ontario': baseCpi2021,
 }
 
+const areaToCpi2022 = {
+  Rest_Of_California: baseCpi2022,
+  'Oakland-Hayward-San_Francisco': 0.05,
+  'Los_Angeles-Long_Beach-Anaheim': 0.079,
+  'San_Diego-Carlsbad': baseCpi2022,
+  'Riverside-San_Bernardino-Ontario': baseCpi2022,
+}
+
 // const INITIAL_SELECTION = 'Enter your zip code'
 
 class Calculator extends React.Component {
@@ -72,7 +81,7 @@ class Calculator extends React.Component {
     this.state = {
       pastRent: undefined,
       currentRent: 0,
-      cpi: baseCpi2021,
+      cpi: baseCpi2022,
       showSection: false,
       showLetter: false,
       town: undefined,
@@ -120,6 +129,9 @@ class Calculator extends React.Component {
   cpiFromZip(zip, increaseDate) {
     var cpi;
     if (increaseDate === "this-year") {
+      cpi = areaToCpi2022[zip.area];
+    }
+    else if (increaseDate === "last-year") {
       cpi = areaToCpi2021[zip.area];
     }
     else {
@@ -133,6 +145,9 @@ class Calculator extends React.Component {
 
     if (this.state.zip === "") {
       if (newIncreaseDate === "this-year") {
+        this.setState({ cpi: baseCpi2022 });
+      }
+      else if (newIncreaseDate === "last-year") {
         this.setState({ cpi: baseCpi2021 });
       }
       else {
@@ -326,10 +341,12 @@ class Calculator extends React.Component {
                 <br />
                 <h5 className="card-title">¿Cuándo entró en vigencia su aumento de alquiler?</h5>
                 <div className="date-selector">
+                  <input type="radio" id="year-before" name="increase-date" value="year-before" onChange={(e) => this.handleIncreaseDateChange(e)} />
+                  <label for="year-before">Entre el 1 de agosto de 2020 y el 31 de julio de 2021</label>
                   <input type="radio" id="last-year" name="increase-date" value="last-year" onChange={(e) => this.handleIncreaseDateChange(e)} />
-                  <label for="last-year">Entre el 1 de agosto de 2020 y el 31 de julio de 2021</label>
+                  <label for="last-year">Entre el 1 de agosto de 2021 y el 31 de julio de 2022</label>
                   <input defaultChecked type="radio" id="this-year" name="increase-date" value="this-year" onChange={(e) => this.handleIncreaseDateChange(e)} />
-                  <label for="this-year">A partir del 1 de agosto de 2021 o posteriormente</label>
+                  <label for="this-year">Entre el 1 de agosto de 2022 y el 31 de julio de 2023</label>
                 </div>
                 <br />
                 <h5>¿Cuál era su alquiler antes del aumento?</h5>
@@ -353,9 +370,9 @@ class Calculator extends React.Component {
               <li>
                 <h5 className="result-title">Maximo Incremento de Renta</h5>
                 {this.state.cpiSelection
-                  ? <h3>{parseFloat((0.05 + parseFloat(this.state.cpi)) * 100).toFixed(2)}%</h3>
+                  ? <h3>{parseFloat(Math.min(10, (0.05 + parseFloat(this.state.cpi)) * 100)).toFixed(2)}%</h3>
                   : <h3>-</h3>}
-                <small>5% Base + {parseFloat(this.state.cpi * 100).toFixed(2)}% CPI</small>
+                <small>5% Base + {parseFloat(this.state.cpi * 100).toFixed(2)}% CPI {this.state.cpi > .05 && "(max 10%)"}</small>
                 <br />
                 <small><strong>{this.state.cpiSelection ? this.state.cpiSelection : ''}</strong></small>
               </li>
