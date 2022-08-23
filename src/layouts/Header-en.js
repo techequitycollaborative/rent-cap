@@ -26,6 +26,14 @@ const Header = ({ location }) => {
         <meta http-equiv="content-language" content="en" />
         <title>California Tenant Protections</title>
         <meta name="description" content="Are you a California resident who wants to know whether you are protected from evictions or rent increases under the new Tenant Protections Act? We can help you find out!" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ER4BQQ6EP"></script>
+        <script>{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-7ER4BQQ6EP');
+        `}</script>
       </Helmet>
       <a id="skip-links" href="#main-content">
         Skip Links

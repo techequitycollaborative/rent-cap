@@ -24,6 +24,14 @@ const Header = ({ location }) => {
         />
         <meta property="og:type" content="website" />
         <meta http-equiv="content-language" content="es" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-7ER4BQQ6EP"></script>
+        <script>{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-7ER4BQQ6EP');
+        `}</script>
       </Helmet>
       <a id="skip-links" href="#main-content">
         Skip Links
